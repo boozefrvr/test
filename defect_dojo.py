@@ -6,7 +6,6 @@ from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
-
 class DefectDojo:
     KEYWORDS = [
         "crypto",
@@ -60,11 +59,6 @@ class DefectDojo:
         return file_name
     
     def get_repo_name(self, line: str) -> str:
-    # 1. Удаляем префикс 'report_' (если он есть)
-        prefix = 'report_'
-        if line.startswith(prefix):
-            line = line[len(prefix):]
-
         # 2. Парсим URL
         parsed_url = urlparse(line)
         # Пример: parsed_url.path может выглядеть как "/PandaTBE/mixaluch-front.json"
@@ -77,7 +71,7 @@ class DefectDojo:
         if last_part.endswith('.json'):
             last_part = last_part[:-5]  # убираем 5 символов (".json")
 
-        return last_part
+        return f"report_{last_part}"
     
     def filter_by_keyword(self, report, keywords):
         """
