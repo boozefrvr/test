@@ -1,18 +1,9 @@
 import subprocess
 import json
-import os
 import requests
-from dotenv import load_dotenv
+from config import config 
 
-# ---------------------------
-# КОНФИГУРАЦИЯ
-# ---------------------------
 
-load_dotenv()
-
-DD_API_URL = os.getenv("DD_API_URL")
-DD_API_KEY = os.getenv("DD_API_KEY")
-DD_ENGAGEMENT_ID = os.getenv("DD_ENGAGEMENT_ID")
 
 # Импорт уязвимостей, связанные с шифрованием
 KEYWORDS = [
@@ -183,7 +174,7 @@ def main():
             print("  No matching vulnerabilities found for specified keywords.")
 
         print(f"\nUploading {filtered_path} for {repo} to DefectDojo...")
-        upload_to_defectdojo(DD_API_URL, DD_API_KEY, DD_ENGAGEMENT_ID, filtered_path)
+        upload_to_defectdojo(config["DD_API_URL"], config["DD_API_KEY"], config["DD_ENGAGEMENT_ID"], filtered_path)
         print("="*50, "\n")
 
 if __name__ == "__main__":
