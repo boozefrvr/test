@@ -16,8 +16,20 @@ DD_ENGAGEMENT_ID = os.getenv("DD_ENGAGEMENT_ID")
 
 # Импорт уязвимостей, связанные с шифрованием
 KEYWORDS = [
-    "crypto", "encryption", "ssl", "tls", "cipher", "aes", "rsa", 
-    "des", "md5", "sha", "signature", "private key", "certificate", "x509"
+    "crypto",
+    "encryption",
+    "ssl",
+    "tls",
+    "cipher",
+    "aes",
+    "rsa", 
+    "des",
+    "md5",
+    "sha",
+    "signature",
+    "private key",
+    "certificate",
+    "x509",
 ]
 
 repos = [
@@ -73,10 +85,10 @@ def filter_by_keyword(report, keywords):
             # Проверка, какие именно ключевые слова встретились
             matched_keywords = []
             for k in keywords:
-                if k in title or k in description:
+                if k in title or k == description:
                     matched_keywords.append(k)
 
-            if matched_keywords:
+            if len(matched_keywords) > 0:
                 # Если нашлись совпадения, оставляем уязвимость
                 count_kept += 1
                 new_vulns.append(v)
@@ -101,11 +113,13 @@ def apply_filter(input_file, output_file, keywords):
     """
     with open(input_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
+        f.close()
 
     filtered_data, kept, removed, matched_info = filter_by_keyword(data, keywords)
 
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(filtered_data, f, ensure_ascii=False, indent=2)
+        f.close()
 
     return output_file, kept, removed, matched_info
 
